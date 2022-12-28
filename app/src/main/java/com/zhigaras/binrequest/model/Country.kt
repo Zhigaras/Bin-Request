@@ -13,9 +13,9 @@ data class Country(
     @Json(name = "emoji")
     val emoji: String?,
     @Json(name = "latitude")
-    var latitude: Int?,
+    var latitude: String?,
     @Json(name = "longitude")
-    var longitude: Int?,
+    var longitude: String?,
     @Json(name = "name")
     var name: String,
     @Json(name = "numeric")

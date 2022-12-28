@@ -1,184 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="viewModel"
-            type="com.zhigaras.binrequest.presentation.MainViewModel" />
+            name="Card"
+            type="com.zhigaras.binrequest.presentation.CardInfoViewGroup" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp">
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:cardCornerRadius="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1.58:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/elegant_red_papers_copy_space">
+            android:layout_height="0dp"
+            app:cardCornerRadius="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1.58:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="@dimen/card_side_dimen" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/elegant_red_papers_copy_space">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_end="@dimen/card_side_dimen" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="@dimen/card_side_dimen" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_bottom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_end="@dimen/card_side_dimen" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="@dimen/card_side_dimen" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_top"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="@dimen/card_side_dimen" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_end="@dimen/card_side_dimen" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/country"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Country: "
-                android:textAppearance="@style/card_info_title_style"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toTopOf="@id/guideline_top" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="@dimen/card_side_dimen" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/country_description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textAppearance="@style/card_info_text_style"
-                app:layout_constraintBottom_toBottomOf="@id/country"
-                app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                app:layout_constraintStart_toEndOf="@id/country" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Country: "
+                    android:textAppearance="@style/card_info_title_style"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toTopOf="@id/guideline_top" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Location: "
-                android:textAppearance="@style/card_info_title_style"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/country" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/country_description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/card_info_text_style"
+                    app:layout_constraintBottom_toBottomOf="@id/country"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toEndOf="@id/country" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/location_description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/card_info_text_style"
-                app:layout_constraintBottom_toBottomOf="@id/location"
-                app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                app:layout_constraintStart_toEndOf="@id/location" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location: "
+                    android:textAppearance="@style/card_info_title_style"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/country" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/bank"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="BANK"
-                android:textAppearance="@style/card_info_title_style"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/location" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/location_description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/card_info_text_style"
+                    app:layout_constraintBottom_toBottomOf="@id/location"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toEndOf="@id/location" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/bank_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/card_info_text_style"
-                app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/bank" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/bank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BANK"
+                    android:textAppearance="@style/card_info_title_style"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/location" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/bank_url"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/card_info_text_style"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/bank_name" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/bank_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/card_info_text_style"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/bank" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/bank_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Phone: "
-                android:textAppearance="@style/card_info_title_style"
-                app:layout_constraintStart_toStartOf="@id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@id/bank_url" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/bank_url"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/card_info_text_style"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/bank_name" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/bank_phone_description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:ellipsize="end"
-                android:onClick="onClick"
-                android:focusable="true"
-                android:maxLines="1"
-                android:textAppearance="@style/card_info_text_style"
-                app:layout_constraintBottom_toBottomOf="@+id/bank_phone"
-                app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                app:layout_constraintStart_toEndOf="@id/bank_phone" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/bank_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Phone: "
+                    android:textAppearance="@style/card_info_title_style"
+                    app:layout_constraintStart_toStartOf="@id/guideline_start"
+                    app:layout_constraintTop_toBottomOf="@id/bank_url" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/label_guideline_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent=".7" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/bank_phone_description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textAppearance="@style/card_info_text_style"
+                    app:layout_constraintBottom_toBottomOf="@+id/bank_phone"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toEndOf="@id/bank_phone" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/label_guideline_top"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent=".75" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/label_guideline_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".7" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/card_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
-                app:layout_constraintEnd_toStartOf="@id/label_guideline_start"
-                app:layout_constraintTop_toTopOf="@id/label_guideline_top" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/label_guideline_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent=".75" />
 
-            <ImageView
-                android:id="@+id/scheme_img"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:cropToPadding="true"
-                app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
-                app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                app:layout_constraintStart_toStartOf="@id/label_guideline_start"
-                app:layout_constraintTop_toTopOf="@id/label_guideline_top" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/card_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
+                    app:layout_constraintEnd_toStartOf="@id/label_guideline_start"
+                    app:layout_constraintTop_toTopOf="@id/label_guideline_top" />
 
+                <ImageView
+                    android:id="@+id/scheme_img"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:cropToPadding="true"
+                    app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
+                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                    app:layout_constraintStart_toStartOf="@id/label_guideline_start"
+                    app:layout_constraintTop_toTopOf="@id/label_guideline_top" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
+        </com.google.android.material.card.MaterialCardView>
 
-    </com.google.android.material.card.MaterialCardView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

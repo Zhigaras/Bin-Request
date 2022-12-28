@@ -1,24 +1,18 @@
 package com.zhigaras.binrequest.presentation
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
 import com.zhigaras.binrequest.R
 import com.zhigaras.binrequest.databinding.CardInfoLayoutBinding
 import com.zhigaras.binrequest.model.BinReplyModel
 
-const val KEY_PHONE = "phoneNumber"
-const val KEY_LOCATION = "location"
-const val KEY_WEB_LINK = "webLink"
 const val TAG = "myDebug"
 
 class CardInfoViewGroup @JvmOverloads constructor(
@@ -28,7 +22,7 @@ class CardInfoViewGroup @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyle) {
     
     private var binding: CardInfoLayoutBinding
-    private var viewModel = MainViewModelFactory().create(MainViewModel::class.java)
+    var currentBinReply: BinReplyModel? = null
     
     init {
         binding = CardInfoLayoutBinding.inflate(
@@ -36,12 +30,12 @@ class CardInfoViewGroup @JvmOverloads constructor(
             this,
             true
         )
-        
-        setUpIntentListeners()
-        
+        setUpClickListeners()
+        setUpClickAvailability()
     }
     
     fun setUpCard(binReply: BinReplyModel) {
+        currentBinReply = binReply
         binding.apply {
             countryDescription.text = buildString {
                 append(binReply.country?.name)
@@ -74,20 +68,59 @@ class CardInfoViewGroup @JvmOverloads constructor(
                 ContextCompat.getDrawable(context, requireSchemeImg)
             )
         }
+        setUpClickAvailability()
     }
     
-//    fun onClick(textView: TextView) {
-//        val phoneNumber = Uri.parse(binding.bankPhoneDescription.text.toString())
-//        val intent = Intent(Intent.ACTION_DIAL, phoneNumber)
-//        viewModel.getExternalIntent(intent)
-//    }
+    private fun setUpClickAvailability() {
+        
+        binding.bankPhoneDescription.let {
+            isClickable = !it.text.isNullOrEmpty()
+        }
+        binding.bankUrl.let {
+            isClickable = !it.text.isNullOrEmpty()
+        }
+        binding.locationDescription.let {
+            isClickable = !it.text.isNullOrEmpty()
+        }
+    }
     
-    fun setUpIntentListeners() {
+    private fun setUpClickListeners() {
         binding.bankPhoneDescription.setOnClickListener {
-            Log.d(TAG, "text is clicked")
-            val phoneNumber = Uri.parse(binding.bankPhoneDescription.text.toString())
-            val intent = Intent(Intent.ACTION_DIAL, phoneNumber)
-            viewModel.getExternalIntent(intent)
+            val intent = Intent(
+                Intent.ACTION_DIAL,
+                Uri.parse("tel:" + currentBinReply?.bank?.phone)
+            )
+            startIntent(intent)
+            
+        }
+        binding.bankUrl.setOnClickListener {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("http://" + currentBinReply?.bank?.url)
+            )
+            startIntent(intent)
+            
+        }
+        binding.locationDescription.setOnClickListener {
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(
+                    "geo:${currentBinReply?.country?.latitude}," +
+                            "${currentBinReply?.country?.longitude}?z=14"
+                )
+            )
+            startIntent(intent)
+            
+        }
+    }
+    
+    private fun startIntent(intent: Intent) {
+        val title = intent.data.toString()
+        val chooser = Intent.createChooser(intent, title)
+        try {
+            context.startActivity(chooser)
+        } catch (e: ActivityNotFoundException) {
+            Log.d(TAG, e.message.toString())
         }
     }
 }

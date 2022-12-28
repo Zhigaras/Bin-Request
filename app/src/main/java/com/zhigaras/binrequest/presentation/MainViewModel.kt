@@ -1,11 +1,5 @@
 package com.zhigaras.binrequest.presentation
 
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhigaras.binrequest.model.BinReplyModel
@@ -33,11 +27,8 @@ class MainViewModel(
     private var _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
     
-    private var _intentChannel = Channel<Intent>()
-    val intentChannel = _intentChannel.receiveAsFlow()
-    
     fun checkBin(number: String) {
-        
+
 //        viewModelScope.launch(Dispatchers.IO) {
 //            val response = remoteRepository.binRequestApi.getBinInfo(number)
 //            if (response.isSuccessful) {
@@ -52,13 +43,17 @@ class MainViewModel(
                 _isLoading.value = true
                 remoteRepository.binRequestApi.getBinInfo(number)
             }.fold(
-                onSuccess = { _replyFlow.value = it.body()},
+                onSuccess = { _replyFlow.value = it.body() },
                 onFailure = { _requestErrorChannel.send(it.message.toString()) }
             )
             _isLoading.value = false
         }
     }
     
+    /**
+     * Проверка на количество введенных цифр. Если цифр меньше 4х - сервер ничего не возвращает,
+     * поэтому я запретил отправлять такие запросы.
+     * */
     fun validateInput(input: CharSequence): Boolean {
         val isValid = input.length >= 4
         if (isValid) _inputErrorFlow.value = null
@@ -68,25 +63,4 @@ class MainViewModel(
         }
         return isValid
     }
-    
-    fun getExternalIntent(intent: Intent) {
-        Log.d(TAG, "viewModel send ${intent.toString()}")
-        viewModelScope.launch {/**Dispatcher??????*/
-            _intentChannel.send(intent)
-        }
-    }
-    
-//    fun startCallIntent(context: Context, phoneNumber: String) {
-//        val numberToCall = Uri.parse(phoneNumber.toString())
-//        val callIntent = Intent(Intent.ACTION_DIAL, numberToCall)
-//        try {
-//            context.startActivity(callIntent)
-//        } catch (e: ActivityNotFoundException) {
-//
-//        }
-//    }
-//
-//    fun onPhoneNumberClick() {
-//
-//    }
 }
