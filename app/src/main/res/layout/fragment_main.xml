@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-
         <variable
             name="viewModel"
             type="com.zhigaras.binrequest.presentation.MainViewModel" />
-
         <import type="android.view.View" />
     </data>
 
@@ -34,14 +30,6 @@
             android:text="MainFragment"
             app:layout_constraintBottom_toTopOf="@+id/bin_input_layout"
             app:layout_constraintEnd_toEndOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/error_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="error"
-            app:layout_constraintBottom_toTopOf="@+id/bin_input_layout"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/bin_input_layout"

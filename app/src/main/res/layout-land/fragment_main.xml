@@ -23,9 +23,9 @@
             android:id="@+id/card_info_view_group"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/bin_input_layout"
+            app:layout_constraintEnd_toEndOf="@id/guideline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            app:layout_constraintTop_toTopOf="parent">
 
         </com.zhigaras.binrequest.presentation.CardInfoViewGroup>
 
@@ -35,26 +35,26 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="MainFragment"
-            app:layout_constraintBottom_toTopOf="@+id/bin_input_layout"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bin_input_layout" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/error_text_view"
+        <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="error"
-            app:layout_constraintEnd_toStartOf="@+id/start_bin_search_button"
-            tools:layout_editor_absoluteY="147dp" />
+            android:id="@+id/guideline"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".65"
+            android:layout_height="wrap_content"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/bin_input_layout"
-            android:layout_width="357dp"
+            android:layout_width="0dp"
             android:layout_height="91dp"
             android:hint="@string/bin_input_hint"
             app:errorEnabled="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/start_bin_search_button">
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/bin_number_input"
@@ -69,11 +69,12 @@
             android:id="@+id/start_bin_search_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
             android:enabled="false"
             android:text="@string/check_bin"
+            app:layout_constraintBottom_toTopOf="@+id/bin_input_layout"
             app:layout_constraintEnd_toEndOf="@+id/bin_input_layout"
-            app:layout_constraintStart_toStartOf="@+id/bin_input_layout"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/bin_input_layout" />
 
         <ProgressBar
             android:id="@+id/progress_bar"

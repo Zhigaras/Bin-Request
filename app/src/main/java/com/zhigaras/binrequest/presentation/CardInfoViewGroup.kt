@@ -31,21 +31,29 @@ class CardInfoViewGroup @JvmOverloads constructor(
             true
         )
         setUpClickListeners()
-        setUpClickAvailability()
     }
     
     fun setUpCard(binReply: BinReplyModel) {
         currentBinReply = binReply
         binding.apply {
-            countryDescription.text = buildString {
-                append(binReply.country?.name)
-                append(binReply.country?.emoji)
+            if (binReply.country?.name != null || binReply.country?.emoji != null) {
+                countryDescription.text = buildString {
+                    append(binReply.country.name)
+                    append(binReply.country.emoji)
+                }
+            } else {
+                countryDescription.text = null
             }
-            locationDescription.text = buildString {
-                append("Lat.")
-                append(binReply.country?.latitude)
-                append(" : Lon.")
-                append(binReply.country?.longitude)
+            
+            if (binReply.country?.latitude != null || binReply.country?.longitude != null) {
+                locationDescription.text = buildString {
+                    append("Lat.")
+                    append(binReply.country.latitude)
+                    append(" : Lon.")
+                    append(binReply.country.longitude)
+                }
+            } else {
+                locationDescription.text = null
             }
             bankName.text = binReply.bank?.name
             bankUrl.text = binReply.bank?.url
@@ -59,58 +67,48 @@ class CardInfoViewGroup @JvmOverloads constructor(
                 "unionpay" -> R.drawable.unionpay
                 "amex" -> R.drawable.american_express
                 "discover" -> R.drawable.dinersclub
-                else -> 0
-                
-                /** To check this!!!!*/
+                else -> android.R.color.transparent
                 
             }
             schemeImg.setImageDrawable(
                 ContextCompat.getDrawable(context, requireSchemeImg)
             )
         }
-        setUpClickAvailability()
     }
     
-    private fun setUpClickAvailability() {
-        
-        binding.bankPhoneDescription.let {
-            isClickable = !it.text.isNullOrEmpty()
-        }
-        binding.bankUrl.let {
-            isClickable = !it.text.isNullOrEmpty()
-        }
-        binding.locationDescription.let {
-            isClickable = !it.text.isNullOrEmpty()
-        }
-    }
     
     private fun setUpClickListeners() {
         binding.bankPhoneDescription.setOnClickListener {
-            val intent = Intent(
-                Intent.ACTION_DIAL,
-                Uri.parse("tel:" + currentBinReply?.bank?.phone)
-            )
-            startIntent(intent)
-            
+            if (!binding.bankPhoneDescription.text.isNullOrEmpty()) {
+                val intent = Intent(
+                    Intent.ACTION_DIAL,
+                    Uri.parse("tel:" + currentBinReply?.bank?.phone)
+                )
+                startIntent(intent)
+                
+            }
         }
         binding.bankUrl.setOnClickListener {
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("http://" + currentBinReply?.bank?.url)
-            )
-            startIntent(intent)
-            
+            if (!binding.bankUrl.text.isNullOrEmpty()) {
+                
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://" + currentBinReply?.bank?.url)
+                )
+                startIntent(intent)
+            }
         }
         binding.locationDescription.setOnClickListener {
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(
-                    "geo:${currentBinReply?.country?.latitude}," +
-                            "${currentBinReply?.country?.longitude}?z=14"
+            if (!binding.locationDescription.text.isNullOrEmpty()) {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(
+                        "geo:${currentBinReply?.country?.latitude}," +
+                                "${currentBinReply?.country?.longitude}?z=14"
+                    )
                 )
-            )
-            startIntent(intent)
-            
+                startIntent(intent)
+            }
         }
     }
     
