@@ -1,15 +1,25 @@
 package com.zhigaras.binrequest.presentation
 
 import android.content.Context
-import android.text.style.TtsSpan.TextBuilder
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import com.zhigaras.binrequest.R
 import com.zhigaras.binrequest.databinding.CardInfoLayoutBinding
 import com.zhigaras.binrequest.model.BinReplyModel
+
+const val KEY_PHONE = "phoneNumber"
+const val KEY_LOCATION = "location"
+const val KEY_WEB_LINK = "webLink"
+const val TAG = "myDebug"
 
 class CardInfoViewGroup @JvmOverloads constructor(
     context: Context,
@@ -18,6 +28,7 @@ class CardInfoViewGroup @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyle) {
     
     private var binding: CardInfoLayoutBinding
+    private var viewModel = MainViewModelFactory().create(MainViewModel::class.java)
     
     init {
         binding = CardInfoLayoutBinding.inflate(
@@ -25,7 +36,9 @@ class CardInfoViewGroup @JvmOverloads constructor(
             this,
             true
         )
-
+        
+        setUpIntentListeners()
+        
     }
     
     fun setUpCard(binReply: BinReplyModel) {
@@ -57,10 +70,24 @@ class CardInfoViewGroup @JvmOverloads constructor(
                 /** To check this!!!!*/
                 
             }
-            schemeImg.setImageDrawable(ContextCompat.getDrawable(context, requireSchemeImg)
+            schemeImg.setImageDrawable(
+                ContextCompat.getDrawable(context, requireSchemeImg)
             )
         }
-        
-        
+    }
+    
+//    fun onClick(textView: TextView) {
+//        val phoneNumber = Uri.parse(binding.bankPhoneDescription.text.toString())
+//        val intent = Intent(Intent.ACTION_DIAL, phoneNumber)
+//        viewModel.getExternalIntent(intent)
+//    }
+    
+    fun setUpIntentListeners() {
+        binding.bankPhoneDescription.setOnClickListener {
+            Log.d(TAG, "text is clicked")
+            val phoneNumber = Uri.parse(binding.bankPhoneDescription.text.toString())
+            val intent = Intent(Intent.ACTION_DIAL, phoneNumber)
+            viewModel.getExternalIntent(intent)
+        }
     }
 }

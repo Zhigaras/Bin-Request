@@ -1,5 +1,11 @@
 package com.zhigaras.binrequest.presentation
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhigaras.binrequest.model.BinReplyModel
@@ -26,6 +32,9 @@ class MainViewModel(
     
     private var _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
+    
+    private var _intentChannel = Channel<Intent>()
+    val intentChannel = _intentChannel.receiveAsFlow()
     
     fun checkBin(number: String) {
         
@@ -59,4 +68,25 @@ class MainViewModel(
         }
         return isValid
     }
+    
+    fun getExternalIntent(intent: Intent) {
+        Log.d(TAG, "viewModel send ${intent.toString()}")
+        viewModelScope.launch {/**Dispatcher??????*/
+            _intentChannel.send(intent)
+        }
+    }
+    
+//    fun startCallIntent(context: Context, phoneNumber: String) {
+//        val numberToCall = Uri.parse(phoneNumber.toString())
+//        val callIntent = Intent(Intent.ACTION_DIAL, numberToCall)
+//        try {
+//            context.startActivity(callIntent)
+//        } catch (e: ActivityNotFoundException) {
+//
+//        }
+//    }
+//
+//    fun onPhoneNumberClick() {
+//
+//    }
 }

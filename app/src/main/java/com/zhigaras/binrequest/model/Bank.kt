@@ -1,15 +1,17 @@
 package com.zhigaras.binrequest.model
 
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Bank(
-    @SerializedName("city")
+    @Json(name = "city")
     val city: String?,
-    @SerializedName("name")
+    @Json(name = "name")
     val name: String?,
-    @SerializedName("phone")
+    @Json(name = "phone")
     val phone: String?,
-    @SerializedName("url")
+    @Json(name = "url")
     val url: String?
 )

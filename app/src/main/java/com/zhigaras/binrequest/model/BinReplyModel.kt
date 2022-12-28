@@ -1,21 +1,23 @@
 package com.zhigaras.binrequest.model
 
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class BinReplyModel(
-    @SerializedName("bank")
+    @Json(name = "bank")
     val bank: Bank?,
-    @SerializedName("brand")
+    @Json(name = "brand")
     val brand: String?,
-    @SerializedName("country")
+    @Json(name = "country")
     val country: Country?,
-    @SerializedName("number")
+    @Json(name = "number")
     val number: Number?,
-    @SerializedName("prepaid")
+    @Json(name = "prepaid")
     val prepaid: Boolean?,
-    @SerializedName("scheme")
+    @Json(name = "scheme")
     val scheme: String?,
-    @SerializedName("type")
+    @Json(name = "type")
     val type: String?
 )

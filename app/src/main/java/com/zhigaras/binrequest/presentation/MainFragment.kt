@@ -1,8 +1,10 @@
 package com.zhigaras.binrequest.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +41,8 @@ class MainFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         
+        val cardInfoViewGroup = binding.cardInfoViewGroup
+        
         startBinSearchListener()
         
         binding.binNumberInput.addTextChangedListener(textWatcher)
@@ -71,6 +75,22 @@ class MainFragment : Fragment() {
                 }
             }
         }
+    
+        viewLifecycleOwner.lifecycleScope
+            .launchWhenStarted {
+                viewModel.intentChannel.collect {
+                    Log.d(TAG, "fragment ${it.toString()}")
+                    requireActivity().startActivity(it)
+                }
+    
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.intentChannel.collect {
+//                    Log.d(TAG, "fragment received")
+//                    activity?.startActivity(it)
+//                }
+//            }
+        }
     }
     
     override fun onDestroyView() {
@@ -84,6 +104,12 @@ class MainFragment : Fragment() {
             viewModel.checkBin(number)
         }
     }
+    
+//    private fun setBinInputMask() {
+//        val mask = UnderscoreDigitSlotsParser().parseSlots("____ ____ ____ ____")
+//        val formatWatcher = MaskFormatWatcher(MaskImpl.createTerminated(PredefinedSlots.CARD_NUMBER_STANDART))
+//        formatWatcher.installOn(binding.binNumberInput)
+//    }
     
     /**Хотел использовать TextWatcher, но ограничивает лимит в 10 запросов в минуту.
      * Понятно, что для реального приложение будет куплен ключ, но без ключа и с TextWatcher даже

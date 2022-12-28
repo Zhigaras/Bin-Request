@@ -1,21 +1,23 @@
 package com.zhigaras.binrequest.model
 
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Country(
-    @SerializedName("alpha2")
+    @Json(name = "alpha2")
     val alpha2: String?,
-    @SerializedName("currency")
+    @Json(name = "currency")
     val currency: String?,
-    @SerializedName("emoji")
+    @Json(name = "emoji")
     val emoji: String?,
-    @SerializedName("latitude")
-    val latitude: Int?,
-    @SerializedName("longitude")
-    val longitude: Int?,
-    @SerializedName("name")
-    val name: String?,
-    @SerializedName("numeric")
+    @Json(name = "latitude")
+    var latitude: Int?,
+    @Json(name = "longitude")
+    var longitude: Int?,
+    @Json(name = "name")
+    var name: String,
+    @Json(name = "numeric")
     val numeric: String?
 )

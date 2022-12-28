@@ -1,11 +1,13 @@
 package com.zhigaras.binrequest.model
 
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Number(
-    @SerializedName("length")
+    @Json(name = "length")
     val length: Int?,
-    @SerializedName("luhn")
+    @Json(name = "luhn")
     val luhn: Boolean?
 )
