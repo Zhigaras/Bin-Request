@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -19,14 +19,14 @@
         android:layout_height="match_parent"
         tools:context=".presentation.MainFragment">
 
-        <include
-            android:id="@+id/include"
-            layout="@layout/card_info_layout"
-            app:layout_constraintEnd_toEndOf="parent"
+        <com.zhigaras.binrequest.presentation.CardInfoViewGroup
+            android:layout_width="match_parent"
+            android:id="@+id/card_info_view_group"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             app:layout_constraintBottom_toTopOf="@+id/bin_input_layout"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/error_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,14 +73,14 @@
             android:text="@string/check_bin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include" />
+            app:layout_constraintTop_toBottomOf="@+id/card_info_view_group" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
-            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/start_bin_search_button"
             app:layout_constraintStart_toEndOf="@+id/start_bin_search_button"
             app:layout_constraintTop_toTopOf="@+id/start_bin_search_button" />

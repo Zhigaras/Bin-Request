@@ -41,13 +41,17 @@ class MainFragment : Fragment() {
         
         startBinSearchListener()
         
-        
         binding.binNumberInput.addTextChangedListener(textWatcher)
         
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.replyFlow.collect {
-                    binding.message.text = it.toString()
+                    if (it != null) {
+                        binding.message.text = it.toString()
+                        binding.cardInfoViewGroup.setUpCard(it)
+                    } else {
+                        binding.message.text = "Oooops"
+                    }
                 }
             }
         }
