@@ -7,17 +7,17 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class BinReplyModel(
     @Json(name = "bank")
-    val bank: Bank?,
+    val bank: Bank? = null,
     @Json(name = "brand")
-    val brand: String?,
+    val brand: String? = null,
     @Json(name = "country")
-    val country: Country?,
+    val country: Country? = null,
     @Json(name = "number")
-    val number: Number?,
+    val number: Number? = null,
     @Json(name = "prepaid")
-    val prepaid: Boolean?,
+    val prepaid: Boolean? = null,
     @Json(name = "scheme")
-    val scheme: String?,
+    val scheme: String? = null,
     @Json(name = "type")
-    val type: String?
+    val type: String? = null
 )

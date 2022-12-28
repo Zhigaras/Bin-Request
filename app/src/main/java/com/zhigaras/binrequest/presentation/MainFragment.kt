@@ -6,6 +6,8 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -39,31 +41,52 @@ class MainFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
         
+        setUpReplyCollector()
+        setUpErrorCollector()
+        setUpLoadingStateWatcher()
+        setUpInputWatcher()
         startBinSearchListener()
-        
-        binding.binNumberInput.addTextChangedListener(textWatcher)
-        
+    }
+    
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+    
+    private fun setUpReplyCollector() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.replyFlow.collect {
-                    if (it != null) {
-                        binding.message.text = it.toString()
-                        binding.cardInfoViewGroup.setUpCard(it)
-                    } else {
-                        binding.message.text = "Oooops"
-                    }
+                viewModel.replyFlow.collect { binReply ->
+                    binding.message.text = binReply.toString()
+                    binReply?.let { it -> binding.cardInfoViewGroup.setUpCard(it) }
                 }
             }
         }
-        
+    }
+    
+    private fun setUpErrorCollector() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.requestErrorChannel.collect {
-                    binding.errorTextView.text = it
+                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
                 }
             }
         }
-        
+    }
+    
+    private fun setUpLoadingStateWatcher() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isLoading.collect {
+                    binding.startBinSearchButton.isEnabled = !it
+                    binding.progressBar.isVisible = it
+                }
+            }
+        }
+    }
+    
+    private fun setUpInputWatcher() {
+        binding.binNumberInput.addTextChangedListener(textWatcher)
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.inputErrorFlow.collect {
@@ -73,18 +96,13 @@ class MainFragment : Fragment() {
         }
     }
     
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-    
     private fun startBinSearchListener() {
         binding.startBinSearchButton.setOnClickListener {
             val number = binding.binNumberInput.text.toString()
             viewModel.checkBin(number)
         }
     }
-    
+
 //    private fun setBinInputMask() {
 //        val mask = UnderscoreDigitSlotsParser().parseSlots("____ ____ ____ ____")
 //        val formatWatcher = MaskFormatWatcher(MaskImpl.createTerminated(PredefinedSlots.CARD_NUMBER_STANDART))

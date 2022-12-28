@@ -1,5 +1,6 @@
 package com.zhigaras.binrequest.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhigaras.binrequest.model.BinReplyModel
@@ -15,6 +16,8 @@ class MainViewModel(
     private val remoteRepository: RemoteRepository
 ) : ViewModel() {
     
+    private val emptyReply = BinReplyModel()
+    
     private val _replyFlow = MutableStateFlow<BinReplyModel?>(null)
     val replyFlow = _replyFlow.asStateFlow()
     
@@ -28,26 +31,39 @@ class MainViewModel(
     val isLoading = _isLoading.asStateFlow()
     
     fun checkBin(number: String) {
-
-//        viewModelScope.launch(Dispatchers.IO) {
-//            val response = remoteRepository.binRequestApi.getBinInfo(number)
-//            if (response.isSuccessful) {
-//                _replyFlow.value = response.body()
-//            } else {
-//                _errorChannel.send(response.errorBody().toString())
-//            }
-//        }
         
         viewModelScope.launch(Dispatchers.IO) {
-            kotlin.runCatching {
-                _isLoading.value = true
-                remoteRepository.binRequestApi.getBinInfo(number)
-            }.fold(
-                onSuccess = { _replyFlow.value = it.body() },
-                onFailure = { _requestErrorChannel.send(it.message.toString()) }
-            )
+            _isLoading.value = true
+            val response = remoteRepository.binRequestApi.getBinInfo(number)
+            when (response.code()) {
+                200 -> {
+                    _replyFlow.value = response.body()
+                }
+                429 -> {
+                    _replyFlow.value = emptyReply
+                    _requestErrorChannel.send("Limit reached. Wait 1 minute please")
+                }
+                else -> {
+                    _replyFlow.value = emptyReply
+                    _requestErrorChannel.send("Unknown BIN")
+                    
+                }
+            }
             _isLoading.value = false
         }
+
+//        viewModelScope.launch(Dispatchers.IO) {
+//            kotlin.runCatching {
+//                _isLoading.value = true
+//                remoteRepository.binRequestApi.getBinInfo(number)
+//            }.fold(
+//                onSuccess = { _replyFlow.value = it.body()
+//                    if (it.code() == 404)
+//                            Log.d(TAG, it.toString())},
+//                onFailure = { _requestErrorChannel.send(it.co) }
+//            )
+//            _isLoading.value = false
+//        }
     }
     
     /**

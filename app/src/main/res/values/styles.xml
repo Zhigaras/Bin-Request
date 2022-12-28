@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="card_info_text_style">
         <item name="android:textSize">16sp</item>
-
     </style>
     <style name="card_info_title_style" parent="card_info_text_style">
         <item name="android:textSize">18sp</item>
     </style>
-
 </resources>
