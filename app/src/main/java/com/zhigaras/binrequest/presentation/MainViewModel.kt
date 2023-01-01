@@ -1,9 +1,13 @@
 package com.zhigaras.binrequest.presentation
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhigaras.binrequest.model.BinReplyModel
+import com.zhigaras.binrequest.repository.MainRepository
 import com.zhigaras.binrequest.repository.RemoteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -11,10 +15,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(
-    private val remoteRepository: RemoteRepository
-) : ViewModel() {
+class MainViewModel @Inject constructor(
+    application: Application,
+    private val mainRepository: MainRepository
+) : AndroidViewModel(application) {
+    
+    init {
+        mainRepository.initSharedPrefs(application.applicationContext)
+    }
     
     private val emptyReply = BinReplyModel()
     
@@ -30,11 +40,12 @@ class MainViewModel(
     private var _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
     
+    val requestHistoryFlow = mainRepository.getAllFromPrefs()
+    
     fun checkBin(number: String) {
-        
         viewModelScope.launch(Dispatchers.IO) {
             _isLoading.value = true
-            val response = remoteRepository.binRequestApi.getBinInfo(number)
+            val response = mainRepository.checkBin(number)
             when (response.code()) {
                 200 -> {
                     _replyFlow.value = response.body()
@@ -46,24 +57,10 @@ class MainViewModel(
                 else -> {
                     _replyFlow.value = emptyReply
                     _requestErrorChannel.send("Unknown BIN")
-                    
                 }
             }
             _isLoading.value = false
         }
-
-//        viewModelScope.launch(Dispatchers.IO) {
-//            kotlin.runCatching {
-//                _isLoading.value = true
-//                remoteRepository.binRequestApi.getBinInfo(number)
-//            }.fold(
-//                onSuccess = { _replyFlow.value = it.body()
-//                    if (it.code() == 404)
-//                            Log.d(TAG, it.toString())},
-//                onFailure = { _requestErrorChannel.send(it.co) }
-//            )
-//            _isLoading.value = false
-//        }
     }
     
     /**
@@ -78,5 +75,13 @@ class MainViewModel(
             else _inputErrorFlow.value = "Input at least 4 numbers"
         }
         return isValid
+    }
+    
+    fun addRequestToPrefs(number: String) {
+        mainRepository.addToPrefs(number)
+    }
+    
+    fun clearPrefs() {
+        mainRepository.clearPrefs()
     }
 }

@@ -2,8 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
-
 android {
     namespace 'com.zhigaras.binrequest'
     compileSdk 33
@@ -34,9 +34,6 @@ android {
     buildFeatures {
         viewBinding true
     }
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
@@ -52,8 +49,16 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     implementation 'androidx.fragment:fragment-ktx:1.5.5'
 
+    // Preferences DataStore
+    implementation "androidx.datastore:datastore-preferences:1.1.0-alpha01"
+
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    //Hilt
+    def hilt_version = "2.44.2"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     //Moshi
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
@@ -67,4 +72,12 @@ dependencies {
 
     //OkHttpLoginInterceptor для наблюдения за подключением в логах
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
+
+    //Room
+    def roomVersion = "2.4.3"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+
 }
+

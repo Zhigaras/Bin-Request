@@ -1,13 +1,18 @@
 package com.zhigaras.binrequest.presentation
 
+import android.app.Application
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModel
-import com.zhigaras.binrequest.repository.RemoteRepository
+import com.zhigaras.binrequest.repository.MainRepository
+import javax.inject.Inject
 
-class MainViewModelFactory: ViewModelProvider.Factory {
+class ViewModelFactory @Inject constructor(
+    private val mainRepository: MainRepository,
+    private val application: Application
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            return MainViewModel(RemoteRepository()) as T
+            return MainViewModel(application, mainRepository) as T
         }
         throw java.lang.IllegalArgumentException("Unknown class name")
     }

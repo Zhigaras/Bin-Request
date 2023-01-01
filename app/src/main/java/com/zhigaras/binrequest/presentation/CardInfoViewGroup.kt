@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.telephony.PhoneNumberUtils
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.core.content.ContextCompat
 import com.zhigaras.binrequest.R
 import com.zhigaras.binrequest.databinding.CardInfoLayoutBinding
 import com.zhigaras.binrequest.model.BinReplyModel
+import java.util.Locale
 
 const val TAG = "myDebug"
 
@@ -80,40 +82,44 @@ class CardInfoViewGroup @JvmOverloads constructor(
     private fun setUpClickListeners() {
         binding.bankPhoneDescription.setOnClickListener {
             if (!binding.bankPhoneDescription.text.isNullOrEmpty()) {
+                val phoneNumber = currentBinReply?.bank?.phone
                 val intent = Intent(
                     Intent.ACTION_DIAL,
-                    Uri.parse("tel:" + currentBinReply?.bank?.phone)
+                    Uri.parse("tel: $phoneNumber")
                 )
-                startIntent(intent)
+                val title = "Call: " + PhoneNumberUtils.formatNumber(
+                    phoneNumber,
+                    Locale.getDefault().country
+                )
+                startIntent(intent, title)
                 
             }
         }
         binding.bankUrl.setOnClickListener {
             if (!binding.bankUrl.text.isNullOrEmpty()) {
-                
                 val intent = Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse("http://" + currentBinReply?.bank?.url)
                 )
-                startIntent(intent)
+                val title = intent.data.toString()
+                startIntent(intent, title)
             }
         }
         binding.locationDescription.setOnClickListener {
             if (!binding.locationDescription.text.isNullOrEmpty()) {
+                val lat = currentBinReply?.country?.latitude
+                val lon = currentBinReply?.country?.longitude
                 val intent = Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse(
-                        "geo:${currentBinReply?.country?.latitude}," +
-                                "${currentBinReply?.country?.longitude}?z=14"
-                    )
+                    Uri.parse("geo:$lat,$lon?z=14")
                 )
-                startIntent(intent)
+                val title = "Locate $lat:$lon"
+                    startIntent(intent, title)
             }
         }
     }
     
-    private fun startIntent(intent: Intent) {
-        val title = intent.data.toString()
+    private fun startIntent(intent: Intent, title: String) {
         val chooser = Intent.createChooser(intent, title)
         try {
             context.startActivity(chooser)

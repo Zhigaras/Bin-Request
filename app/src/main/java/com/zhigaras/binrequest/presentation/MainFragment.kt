@@ -14,18 +14,25 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.zhigaras.binrequest.databinding.FragmentMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainFragment : Fragment() {
     
     companion object {
         fun newInstance() = MainFragment()
     }
     
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    private val viewModel: MainViewModel by viewModels { viewModelFactory }
+    
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     
-    private val viewModel: MainViewModel by viewModels { MainViewModelFactory() }
+    private val searchHistoryAdapter = SearchRequestAdapter()
     
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,14 +45,21 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        
+        binding.recyclerView.adapter = searchHistoryAdapter
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.requestHistoryFlow.collect {
+                    searchHistoryAdapter.setData(it)
+                }
+            }
+        }
         setUpReplyCollector()
         setUpErrorCollector()
         setUpLoadingStateWatcher()
         setUpInputWatcher()
-        startBinSearchListener()
+        setUpBinSearchListener()
+        setUpClearButtonListener()
     }
     
     override fun onDestroyView() {
@@ -57,7 +71,6 @@ class MainFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.replyFlow.collect { binReply ->
-                    binding.message.text = binReply.toString()
                     binReply?.let { it -> binding.cardInfoViewGroup.setUpCard(it) }
                 }
             }
@@ -96,10 +109,17 @@ class MainFragment : Fragment() {
         }
     }
     
-    private fun startBinSearchListener() {
+    private fun setUpBinSearchListener() {
         binding.startBinSearchButton.setOnClickListener {
             val number = binding.binNumberInput.text.toString()
+            viewModel.addRequestToPrefs(number)
             viewModel.checkBin(number)
+        }
+    }
+    
+    private fun setUpClearButtonListener() {
+        binding.clearText.setOnClickListener {
+            viewModel.clearPrefs()
         }
     }
 

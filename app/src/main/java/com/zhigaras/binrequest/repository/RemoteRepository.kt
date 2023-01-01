@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import javax.inject.Inject
 
 
 private const val BASE_URL = "https://lookup.binlist.net/"
@@ -19,7 +20,7 @@ interface BinRequestInterface {
     
 }
 
-class RemoteRepository {
+class RemoteRepository @Inject constructor() {
     
     private val retrofit = Retrofit
         .Builder()
