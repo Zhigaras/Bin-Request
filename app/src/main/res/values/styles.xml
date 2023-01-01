@@ -6,4 +6,7 @@
     <style name="card_info_title_style" parent="card_info_text_style">
         <item name="android:textSize">18sp</item>
     </style>
+    <style name="card_info_text_style.clickable" parent="card_info_text_style">
+        <item name="android:textColor">@color/light_blue</item>
+    </style>
 </resources>

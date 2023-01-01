@@ -47,19 +47,28 @@ class CardInfoViewGroup @JvmOverloads constructor(
                 countryDescription.text = null
             }
             
-            if (binReply.country?.latitude != null || binReply.country?.longitude != null) {
-                locationDescription.text = buildString {
-                    append("Lat.")
-                    append(binReply.country.latitude)
-                    append(" : Lon.")
-                    append(binReply.country.longitude)
+            locationDescription.apply {
+                if (binReply.country?.latitude != null || binReply.country?.longitude != null) {
+                    text = buildString {
+                        append("Lat.")
+                        append(binReply.country.latitude)
+                        append(" : Lon.")
+                        append(binReply.country.longitude)
+                    }
+                    paint.isUnderlineText = true
+                } else {
+                    text = null
                 }
-            } else {
-                locationDescription.text = null
             }
             bankName.text = binReply.bank?.name
-            bankUrl.text = binReply.bank?.url
-            bankPhoneDescription.text = binReply.bank?.phone
+            bankUrl.apply {
+                text = binReply.bank?.url
+                paint.isUnderlineText = true
+            }
+            bankPhoneDescription.apply {
+                text = binReply.bank?.phone
+                paint.isUnderlineText = true
+            }
             cardType.text = binReply.type
             val requireSchemeImg = when (binReply.scheme?.lowercase()) {
                 "visa" -> R.drawable.visa
@@ -114,7 +123,7 @@ class CardInfoViewGroup @JvmOverloads constructor(
                     Uri.parse("geo:$lat,$lon?z=14")
                 )
                 val title = "Locate $lat:$lon"
-                    startIntent(intent, title)
+                startIntent(intent, title)
             }
         }
     }

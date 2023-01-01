@@ -82,8 +82,9 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/location_description"
                 android:layout_width="0dp"
+                android:background="?android:attr/selectableItemBackground"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/card_info_text_style"
+                android:textAppearance="@style/card_info_text_style.clickable"
                 app:layout_constraintBottom_toBottomOf="@id/location"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toEndOf="@id/location" />
@@ -111,8 +112,9 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/bank_url"
                 android:layout_width="0dp"
+                android:background="?android:attr/selectableItemBackground"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/card_info_text_style"
+                android:textAppearance="@style/card_info_text_style.clickable"
                 app:layout_constraintBottom_toTopOf="@+id/bank_phone"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_end"
                 app:layout_constraintStart_toStartOf="@id/guideline_start"
@@ -133,8 +135,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:background="?android:attr/selectableItemBackground"
                 android:maxLines="1"
-                android:textAppearance="@style/card_info_text_style"
+                android:textAppearance="@style/card_info_text_style.clickable"
                 app:layout_constraintBottom_toBottomOf="@+id/bank_phone"
                 app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintStart_toEndOf="@id/bank_phone" />

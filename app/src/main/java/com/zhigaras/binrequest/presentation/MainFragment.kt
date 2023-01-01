@@ -32,7 +32,7 @@ class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     
-    private val searchHistoryAdapter = SearchRequestAdapter()
+    private val searchHistoryAdapter = SearchRequestAdapter {number -> onItemClick(number)}
     
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -118,9 +118,16 @@ class MainFragment : Fragment() {
     }
     
     private fun setUpClearButtonListener() {
-        binding.clearText.setOnClickListener {
-            viewModel.clearPrefs()
+        binding.clearText.apply {
+            paint.isUnderlineText = true
+            setOnClickListener {
+                viewModel.clearPrefs()
+            }
         }
+    }
+    
+    private fun onItemClick(number: String) {
+        binding.binNumberInput.setText(number)
     }
 
 //    private fun setBinInputMask() {

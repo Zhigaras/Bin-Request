@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.zhigaras.binrequest.databinding.SearchRequestItemBinding
 
-class SearchRequestAdapter : Adapter<SearchRequestViewHolder>() {
+class SearchRequestAdapter(
+    private val onClick: (String) -> Unit
+) : Adapter<SearchRequestViewHolder>() {
     
     private var data: List<String> = emptyList()
+    
     @SuppressLint("NotifyDataSetChanged")
     fun setData(data: List<String>) {
         this.data = data
@@ -19,7 +22,7 @@ class SearchRequestAdapter : Adapter<SearchRequestViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchRequestViewHolder {
         return SearchRequestViewHolder(
             SearchRequestItemBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
+                LayoutInflater.from(parent.context), parent, false
             )
         )
     }
@@ -28,6 +31,9 @@ class SearchRequestAdapter : Adapter<SearchRequestViewHolder>() {
         val item = data.getOrNull(position)
         item?.let {
             holder.binding.itemTextview.text = item
+        }
+        holder.binding.root.setOnClickListener {
+            item?.let(onClick)
         }
     }
     
