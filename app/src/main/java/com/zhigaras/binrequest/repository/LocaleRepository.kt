@@ -23,13 +23,13 @@ class LocaleRepository @Inject constructor() {
         searchHistoryPrefs = context.getSharedPreferences(SEARCH_HISTORY_PREFS, MODE_PRIVATE)
     }
     
-    fun addToPrefs(item: String) {
+    suspend fun addToPrefs(item: String) {
         if (searchHistoryPrefs.contains(item))
             searchHistoryPrefs.edit().remove(item).apply()
         searchHistoryPrefs.edit().putString(item, System.currentTimeMillis().toString()).apply()
     }
     
-    fun clearPrefs() {
+    suspend fun clearPrefs() {
         searchHistoryPrefs.edit().clear().apply()
     }
     

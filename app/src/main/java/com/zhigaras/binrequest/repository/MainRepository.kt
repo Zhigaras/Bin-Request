@@ -21,11 +21,11 @@ class MainRepository @Inject constructor(
         localeRepository.initSharedPrefs(context)
     }
     
-    fun addToPrefs(item: String) {
+    suspend fun addToPrefs(item: String) {
         localeRepository.addToPrefs(item)
     }
     
-    fun clearPrefs() {
+    suspend fun clearPrefs() {
         localeRepository.clearPrefs()
     }
     fun getAllFromPrefs() : Flow<List<String>> {

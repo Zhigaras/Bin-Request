@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/elegant_red_papers_copy_space">
+            android:background="@drawable/card_background">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_start"

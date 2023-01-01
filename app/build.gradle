@@ -73,11 +73,5 @@ dependencies {
     //OkHttpLoginInterceptor для наблюдения за подключением в логах
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
 
-    //Room
-    def roomVersion = "2.4.3"
-    implementation "androidx.room:room-runtime:$roomVersion"
-    implementation "androidx.room:room-ktx:$roomVersion"
-    kapt "androidx.room:room-compiler:$roomVersion"
-
 }
 

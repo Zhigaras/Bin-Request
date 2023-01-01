@@ -78,10 +78,14 @@ class MainViewModel @Inject constructor(
     }
     
     fun addRequestToPrefs(number: String) {
-        mainRepository.addToPrefs(number)
+        viewModelScope.launch(Dispatchers.IO) {
+            mainRepository.addToPrefs(number)
+        }
     }
     
     fun clearPrefs() {
-        mainRepository.clearPrefs()
+        viewModelScope.launch(Dispatchers.IO) {
+            mainRepository.clearPrefs()
+        }
     }
 }
