@@ -8,14 +8,13 @@ import android.telephony.PhoneNumberUtils
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.zhigaras.binrequest.R
 import com.zhigaras.binrequest.databinding.CardInfoLayoutBinding
 import com.zhigaras.binrequest.model.BinReplyModel
 import java.util.Locale
-
-const val TAG = "myDebug"
 
 class CardInfoViewGroup @JvmOverloads constructor(
     context: Context,
@@ -35,6 +34,8 @@ class CardInfoViewGroup @JvmOverloads constructor(
         setUpClickListeners()
     }
     
+    /** В полях Country и Location используется stringBuilder, поэтому перед заполнением этих полей
+     *  во view проверяю на их на null, чтобы поля оставались пустые и некликабельными. */
     fun setUpCard(binReply: BinReplyModel) {
         currentBinReply = binReply
         binding.apply {
@@ -133,7 +134,7 @@ class CardInfoViewGroup @JvmOverloads constructor(
         try {
             context.startActivity(chooser)
         } catch (e: ActivityNotFoundException) {
-            Log.d(TAG, e.message.toString())
+            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
         }
     }
 }

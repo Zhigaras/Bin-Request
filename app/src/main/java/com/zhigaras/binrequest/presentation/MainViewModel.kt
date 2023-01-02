@@ -1,14 +1,10 @@
 package com.zhigaras.binrequest.presentation
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhigaras.binrequest.model.BinReplyModel
 import com.zhigaras.binrequest.repository.MainRepository
-import com.zhigaras.binrequest.repository.RemoteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,10 +17,6 @@ class MainViewModel @Inject constructor(
     application: Application,
     private val mainRepository: MainRepository
 ) : AndroidViewModel(application) {
-    
-    init {
-        mainRepository.initSharedPrefs(application.applicationContext)
-    }
     
     private val emptyReply = BinReplyModel()
     
@@ -47,14 +39,14 @@ class MainViewModel @Inject constructor(
             _isLoading.value = true
             val response = mainRepository.checkBin(number)
             when (response.code()) {
-                200 -> {
+                200 -> { /** Успешный запрос. */
                     _replyFlow.value = response.body()
                 }
-                429 -> {
+                429 -> { /** Первышение лимита в 10 запросов в минуту. */
                     _replyFlow.value = emptyReply
                     _requestErrorChannel.send("Limit reached. Wait 1 minute please")
                 }
-                else -> {
+                else -> { /** Пустые ответы, неизвествный БИН. */
                     _replyFlow.value = emptyReply
                     _requestErrorChannel.send("Unknown BIN")
                 }

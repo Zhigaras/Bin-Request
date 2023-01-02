@@ -15,7 +15,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.zhigaras.binrequest.databinding.FragmentMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -47,18 +49,12 @@ class MainFragment : Fragment() {
         
         binding.recyclerView.adapter = searchHistoryAdapter
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.requestHistoryFlow.collect {
-                    searchHistoryAdapter.setData(it)
-                }
-            }
-        }
         setUpReplyCollector()
         setUpErrorCollector()
         setUpLoadingStateWatcher()
         setUpInputWatcher()
         setUpBinSearchListener()
+        setUpRequestHistoryFlow()
         setUpClearButtonListener()
     }
     
@@ -77,6 +73,8 @@ class MainFragment : Fragment() {
         }
     }
     
+    /**
+     * Ошибки поска номера выводятся тостами. */
     private fun setUpErrorCollector() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -112,8 +110,29 @@ class MainFragment : Fragment() {
     private fun setUpBinSearchListener() {
         binding.startBinSearchButton.setOnClickListener {
             val number = binding.binNumberInput.text.toString()
+            binding.binNumberInput.text = null
             viewModel.addRequestToPrefs(number)
             viewModel.checkBin(number)
+        }
+    }
+    
+    private fun setUpRequestHistoryFlow() {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.requestHistoryFlow.collect {
+                    val historyList = it.toMutablePreferences()
+                        .asMap()
+                        .mapKeys { (k, _) -> k.name }
+                        .mapValues { (_, v) -> v.toString().toLongOrNull() }
+                        .toList()
+                        .sortedBy { (_,v) -> v }
+                        .reversed()
+                        .map { (k,_) -> k }
+                    withContext(Dispatchers.Main) {
+                        searchHistoryAdapter.setData(historyList)
+                    }
+                }
+            }
         }
     }
     
@@ -126,16 +145,15 @@ class MainFragment : Fragment() {
         }
     }
     
+    /**
+     * По клику на элемнт recyclerView номер из этого элемента попадает в поле для ввода номера
+     * карты. */
     private fun onItemClick(number: String) {
         binding.binNumberInput.setText(number)
     }
-
-//    private fun setBinInputMask() {
-//        val mask = UnderscoreDigitSlotsParser().parseSlots("____ ____ ____ ____")
-//        val formatWatcher = MaskFormatWatcher(MaskImpl.createTerminated(PredefinedSlots.CARD_NUMBER_STANDART))
-//        formatWatcher.installOn(binding.binNumberInput)
-//    }
-    
+    /**
+     * TextWatcher через viewModel проверяет количество введенных символов и запрещает поиск
+     * если их меньше 4х. */
     private val textWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         

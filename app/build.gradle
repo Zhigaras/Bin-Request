@@ -49,29 +49,25 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     implementation 'androidx.fragment:fragment-ktx:1.5.5'
 
-    // Preferences DataStore
+    // Preferences DataStore для сохранения истории поиска
     implementation "androidx.datastore:datastore-preferences:1.1.0-alpha01"
 
-    //Retrofit
+    //Retrofit для взаимодействия с API
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 
-    //Hilt
+    //Hilt для внедрения зависимостей между слоями приложения
     def hilt_version = "2.44.2"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    //Moshi
+    //Moshi для десериализации ответов от сервера
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     implementation 'com.squareup.moshi:moshi-kotlin:1.13.0'
     implementation 'com.squareup.moshi:moshi:1.13.0'
     implementation 'com.squareup.moshi:moshi-kotlin-codegen:1.13.0'
     kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.13.0'
 
-    //Gson
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-
     //OkHttpLoginInterceptor для наблюдения за подключением в логах
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
-
 }
 
