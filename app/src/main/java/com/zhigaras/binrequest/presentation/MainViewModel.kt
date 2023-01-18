@@ -1,7 +1,6 @@
 package com.zhigaras.binrequest.presentation
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhigaras.binrequest.model.BinReplyModel
 import com.zhigaras.binrequest.repository.MainRepository
@@ -14,9 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    application: Application,
     private val mainRepository: MainRepository
-) : AndroidViewModel(application) {
+) : ViewModel() {
     
     private val emptyReply = BinReplyModel()
     
@@ -39,14 +37,14 @@ class MainViewModel @Inject constructor(
             _isLoading.value = true
             val response = mainRepository.checkBin(number)
             when (response.code()) {
-                200 -> { /** Успешный запрос. */
+                200 -> { /** Success */
                     _replyFlow.value = response.body()
                 }
-                429 -> { /** Первышение лимита в 10 запросов в минуту. */
+                429 -> { /** Exceeding the limit of 10 requests per minute */
                     _replyFlow.value = emptyReply
                     _requestErrorChannel.send("Limit reached. Wait 1 minute please")
                 }
-                else -> { /** Пустые ответы, неизвествный БИН. */
+                else -> { /** Empty reply, unknown BIN */
                     _replyFlow.value = emptyReply
                     _requestErrorChannel.send("Unknown BIN")
                 }
@@ -56,8 +54,8 @@ class MainViewModel @Inject constructor(
     }
     
     /**
-     * Проверка на количество введенных цифр. Если цифр меньше 4х - сервер ничего не возвращает,
-     * поэтому я запретил отправлять такие запросы.
+     * Check for the number of entered digits. If there are less than 4 digits
+     * the server does not return anything so I forbade sending such requests.
      * */
     fun validateInput(input: CharSequence): Boolean {
         val isValid = input.length >= 4

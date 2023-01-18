@@ -49,13 +49,13 @@ class MainFragment : Fragment() {
         
         binding.recyclerView.adapter = searchHistoryAdapter
 
-        setUpReplyCollector()
-        setUpErrorCollector()
-        setUpLoadingStateWatcher()
-        setUpInputWatcher()
-        setUpBinSearchListener()
-        setUpRequestHistoryFlow()
-        setUpClearButtonListener()
+        setupReplyCollector()
+        setupErrorCollector()
+        setupLoadingStateWatcher()
+        setupInputWatcher()
+        setupBinSearchListener()
+        setupRequestHistoryFlow()
+        setupClearButtonListener()
     }
     
     override fun onDestroyView() {
@@ -63,7 +63,7 @@ class MainFragment : Fragment() {
         _binding = null
     }
     
-    private fun setUpReplyCollector() {
+    private fun setupReplyCollector() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.replyFlow.collect { binReply ->
@@ -74,8 +74,8 @@ class MainFragment : Fragment() {
     }
     
     /**
-     * Ошибки поска номера выводятся тостами. */
-    private fun setUpErrorCollector() {
+     * Number search errors are displayed as toasts. */
+    private fun setupErrorCollector() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.requestErrorChannel.collect {
@@ -85,7 +85,7 @@ class MainFragment : Fragment() {
         }
     }
     
-    private fun setUpLoadingStateWatcher() {
+    private fun setupLoadingStateWatcher() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isLoading.collect {
@@ -96,7 +96,7 @@ class MainFragment : Fragment() {
         }
     }
     
-    private fun setUpInputWatcher() {
+    private fun setupInputWatcher() {
         binding.binNumberInput.addTextChangedListener(textWatcher)
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -107,7 +107,7 @@ class MainFragment : Fragment() {
         }
     }
     
-    private fun setUpBinSearchListener() {
+    private fun setupBinSearchListener() {
         binding.startBinSearchButton.setOnClickListener {
             val number = binding.binNumberInput.text.toString()
             binding.binNumberInput.text = null
@@ -116,7 +116,7 @@ class MainFragment : Fragment() {
         }
     }
     
-    private fun setUpRequestHistoryFlow() {
+    private fun setupRequestHistoryFlow() {
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.requestHistoryFlow.collect {
@@ -136,7 +136,7 @@ class MainFragment : Fragment() {
         }
     }
     
-    private fun setUpClearButtonListener() {
+    private fun setupClearButtonListener() {
         binding.clearText.apply {
             paint.isUnderlineText = true
             setOnClickListener {
@@ -146,14 +146,14 @@ class MainFragment : Fragment() {
     }
     
     /**
-     * По клику на элемнт recyclerView номер из этого элемента попадает в поле для ввода номера
-     * карты. */
+     * By clicking on the recyclerView element the number from this element enters
+     * the field for entering the card number. */
     private fun onItemClick(number: String) {
         binding.binNumberInput.setText(number)
     }
     /**
-     * TextWatcher через viewModel проверяет количество введенных символов и запрещает поиск
-     * если их меньше 4х. */
+     * TextWatcher checks the number of entered characters through the viewModel and disables
+     * the search if there are less than 4 characters. */
     private val textWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         

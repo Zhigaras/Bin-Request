@@ -35,5 +35,4 @@ class LocaleRepository @Inject constructor(
     fun getAllFromPrefs(): Flow<Preferences> {
         return dataStore.data
     }
-    
 }

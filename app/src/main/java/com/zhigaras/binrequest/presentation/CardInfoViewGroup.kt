@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.telephony.PhoneNumberUtils
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +13,7 @@ import androidx.core.content.ContextCompat
 import com.zhigaras.binrequest.R
 import com.zhigaras.binrequest.databinding.CardInfoLayoutBinding
 import com.zhigaras.binrequest.model.BinReplyModel
-import java.util.Locale
+import java.util.*
 
 class CardInfoViewGroup @JvmOverloads constructor(
     context: Context,
@@ -23,7 +22,7 @@ class CardInfoViewGroup @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyle) {
     
     private var binding: CardInfoLayoutBinding
-    var currentBinReply: BinReplyModel? = null
+    private var currentBinReply: BinReplyModel? = null
     
     init {
         binding = CardInfoLayoutBinding.inflate(
@@ -34,8 +33,8 @@ class CardInfoViewGroup @JvmOverloads constructor(
         setUpClickListeners()
     }
     
-    /** В полях Country и Location используется stringBuilder, поэтому перед заполнением этих полей
-     *  во view проверяю на их на null, чтобы поля оставались пустые и некликабельными. */
+    /** Use stringBuilder in fields "Country" and "Location", so before filling these fields
+     * I check them for null so the fields remain empty and non-clickable. */
     fun setUpCard(binReply: BinReplyModel) {
         currentBinReply = binReply
         binding.apply {
